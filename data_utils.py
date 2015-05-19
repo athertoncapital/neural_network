@@ -63,7 +63,7 @@ def load_cifar_batches(root_path):
  	# training data (5 batch files)
  	training_data = []
  	training_labels = []
- 	for i in range(1, 2): # range(1, 6) for all 5 datasets, use just 1 for development
+ 	for i in range(1, 6): # range(1, 6) for all 5 datasets, use just 1 for development
  		batch_file_name = 'data_batch_' + str(i)
  		file_path = os.path.join(root_path, batch_file_name)
  		

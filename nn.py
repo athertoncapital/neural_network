@@ -31,7 +31,7 @@ class Network():
 			if p.argmax() == training_labels[i].argmax():
 				count += 1
 
-			# loss = self.cross_entropy_loss(p, training_labels[i])
+			loss = self.cross_entropy_loss(p, training_labels[i])
 
 			# BACKPROPAGATION
 			# output layer (z) gradient
@@ -39,14 +39,14 @@ class Network():
 			dloss_dw2 = np.dot(dloss_dz, y.T)
 
 			# hidden layer (y) gradient
-			# dloss_dy = np.dot(self.w2.T, dloss_dz)
-			# dy_da = self.sigmoid_derivative(y)
-			# dy_dw1 = np.dot(dy_da, x.T)
-			# dloss_dw1 = np.dot(dloss_dy.T, dy_dw1)
+			dloss_dy = np.dot(self.w2.T, dloss_dz)
+			dy_da = self.sigmoid_derivative(y)
+			dloss_da = dloss_dy * dy_da
+			dloss_dw1 = np.dot(dloss_da, x.T)
 
 			# # perform parameter update
-			# self.w1 -= dloss_dw1
-			self.w2 -= dloss_dw2
+			self.w1 -= dloss_dw1 * 0.01
+			self.w2 -= dloss_dw2 * 0.01
 
 		return float(count) / len(training_labels)
 
@@ -87,24 +87,6 @@ class Network():
 	        # zero because it's 1+z.
 	        z = np.exp(x)
 	        return z / (1 + z)
-
-	# @staticmethod
-	# def sigmoid(x):
-	# 	""" 
-	# 	A function that takes a real-valued number and "squashes" it into range between 0 and 1, so
-	# 	that large negative numbers become 0 and large positive numbers become 1.  
-
-	# 	Parameters
-	# 	----------
-	# 	x : numpy.ndarray
-	# 		an array of real values, each of them is given as an argument to the sigmoid function.
-
-	# 	Returns
-	# 	-------
-	# 	numpy.ndarray
-	# 		an array of real values that are "squashed" into range between 0 and 1 by the function
-	# 	""" 
-	# 	return 1.0 / (1.0 + np.exp(-x))
 
 	def sigmoid_derivative(self, y):
 		return self.sigmoid(y) * (1 - self.sigmoid(y))
