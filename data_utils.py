@@ -1,6 +1,7 @@
 import cPickle
 import numpy as np
 import os
+import pdb
 
 def unpickle(file_path):
 	"""
@@ -63,7 +64,7 @@ def load_cifar_batches(root_path):
  	# training data (5 batch files)
  	training_data = []
  	training_labels = []
- 	for i in range(1, 6): # range(1, 6) for all 5 datasets, use just 1 for development
+ 	for i in range(1, 2): # range(1, 6) for all 5 datasets, use just 1 for development
  		batch_file_name = 'data_batch_' + str(i)
  		file_path = os.path.join(root_path, batch_file_name)
  		
@@ -80,7 +81,7 @@ def load_cifar_batches(root_path):
 
  	datadict = unpickle(file_path)
  	dataset['test_data'] = datadict['data']
- 	dataset['test_labels'] = np.array([vectorize_label(label) for label in datadict['labels']])
+ 	dataset['test_labels'] = np.array(datadict['labels'])
 
  	return dataset
 
@@ -100,7 +101,7 @@ def vectorize_label(n):
 	numpy.ndarray
 		The vectorized representation of the label.	
 	"""
-	v = np.zeros((10, 1))
+	v = np.zeros(10)
 	v[n] = 1
 	return v
 	  	
