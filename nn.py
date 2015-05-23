@@ -28,7 +28,7 @@ class Network():
 
 		return np.array(predictions)
 
-	def train(self, training_data, training_labels, batch_size=10, epochs=4, plot=True):
+	def train(self, training_data, training_labels, batch_size=10, epochs=1, learning_rate=0.1):
 		data_mini_batches = [training_data[n:n+batch_size] for n in range(0, len(training_data), batch_size)]
 		label_mini_batches = [training_labels[n:n+batch_size] for n in range(0, len(training_labels), batch_size)]
 		
@@ -79,12 +79,12 @@ class Network():
 				dloss_dw1 = np.dot(dloss_da, x.T)
 
 				# perform weight update
-				self.w1 -= dloss_dw1 * 0.01
-				self.w2 -= dloss_dw2 * 0.01
+				self.w1 -= dloss_dw1 * learning_rate
+				self.w2 -= dloss_dw2 * learning_rate
 
 				# perform bias update
-				self.b1 -= np.sum(dloss_da, axis=1).reshape(self.sizes[1], 1) * 0.01
-				self.b2 -= np.sum(dloss_dz, axis=1).reshape(self.sizes[2], 1) * 0.01
+				self.b1 -= np.sum(dloss_da, axis=1).reshape(self.sizes[1], 1) * learning_rate
+				self.b2 -= np.sum(dloss_dz, axis=1).reshape(self.sizes[2], 1) * learning_rate
 
 		# plot epoch losses 
 		plt.plot(range(len(tenth_epoch_losses)), tenth_epoch_losses)
